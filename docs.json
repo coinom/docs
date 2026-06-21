@@ -38,14 +38,14 @@
         "pages": [
           "index",
           "quickstart",
-          "create-merchant-and-access-api-key"
+          "merchant/create"
         ]
       },
       {
         "group": "plugins",
         "icon": "plug",
         "pages": [
-          "woo-commerce"
+          "plugins/woocommerce"
         ]
       }
     ]
