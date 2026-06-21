@@ -1,0 +1,95 @@
+---
+title: "WooCommerce"
+---
+
+Accept cryptocurrency payments directly in your WooCommerce store using the Coinom Payment Gateway plugin.
+
+## Quick Links
+
+- [Overview](#overview)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Configuration](#configuration)
+
+## Overview
+
+The Coinom WooCommerce plugin allows merchants to accept cryptocurrency payments through Coinom.
+
+<CardGroup cols={2}>
+  <Card title="Multi-Crypto Support" icon="coins">
+    Accept Bitcoin, USDT, Ethereum, BNB, Litecoin, Dogecoin and TRON.
+  </Card>
+
+  <Card title="Automatic Verification" icon="shield-check">
+    Payments are verified securely through the Coinom API.
+  </Card>
+
+  <Card title="WooCommerce Blocks" icon="shopping-cart">
+    Compatible with Classic Checkout and Checkout Blocks.
+  </Card>
+
+  <Card title="Easy Setup" icon="plug">
+    Install and configure the plugin in minutes.
+  </Card>
+</CardGroup>
+
+## Requirements
+
+Before installing the plugin, make sure your environment meets the following requirements.
+
+| Requirement | Version |
+| --- | --- |
+| WordPress | 5.6\+ |
+| WooCommerce | Latest Supported |
+| PHP | 7.4\+ |
+| Coinom Account | Required |
+
+<Info>
+  You need an active Coinom merchant account and API Key before configuring the plugin.
+</Info>
+
+## Installation
+
+<Tabs>
+  <Tab title="WordPress Admin">
+    1. Download the Coinom WooCommerce plugin ZIP file.
+    2. Navigate to **Plugins → Add New Plugin**.
+    3. Click **Upload Plugin**.
+    4. Select the ZIP file.
+    5. Click **Install Now**.
+    6. Activate the plugin.
+  </Tab>
+  <Tab title="Manual Installation">
+    1. Extract the plugin ZIP file.
+    2. Upload the plugin folder to `/wp-content/plugins/`.
+    3. Activate the plugin from the WordPress Plugins page.
+  </Tab>
+</Tabs>
+
+<br />
+
+<br />
+
+## Configuration
+
+After activating the plugin, open the Coinom gateway settings.
+
+### API Key
+
+Generate an API Key from your Coinom Dashboard and paste it into the plugin settings.
+
+### Merchant
+
+Select the merchant that should receive incoming payments.
+
+### Return URL
+
+Customers are automatically redirected back to your store after successful payment.
+
+### Payment Verification
+
+Coinom verifies payments server-side before updating the WooCommerce order status.
+
+<Tip>
+  You can create and manage API Keys from the Coinom Dashboard.
+</Tip>

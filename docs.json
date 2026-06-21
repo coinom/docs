@@ -31,7 +31,24 @@
           "icon": "newspaper"
         }
       ]
-    }
+    },
+    "groups": [
+      {
+        "group": "Getting Started",
+        "pages": [
+          "index",
+          "quickstart",
+          "create-merchant-and-access-api-key"
+        ]
+      },
+      {
+        "group": "plugins",
+        "icon": "plug",
+        "pages": [
+          "woo-commerce"
+        ]
+      }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",
