@@ -24,11 +24,7 @@
           "plugins/woocommerce"
         ]
       },
-      "test",
-      {
-        "group": "Getting Startedqq",
-        "pages": []
-      }
+      "test"
     ]
   },
   "logo": {
