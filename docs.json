@@ -13,9 +13,9 @@
       {
         "group": "Getting Started",
         "pages": [
+          "index",
           "merchant/create-coinom-account",
-          "merchant/create",
-          "index"
+          "merchant/create"
         ]
       },
       {
