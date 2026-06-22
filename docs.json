@@ -14,21 +14,6 @@
         "group": "Getting Started",
         "pages": [
           "index",
-          "quickstart"
-        ]
-      }
-    ],
-
-
-
-
-
-    
-    "groups": [
-      {
-        "group": "Getting Started",
-        "pages": [
-          "index",
           "merchant/create-coinom-account",
           "merchant/create"
         ]
@@ -38,6 +23,14 @@
         "icon": "plug",
         "pages": [
           "plugins/woocommerce"
+        ]
+      },
+      "test",
+      {
+        "group": "Getting Started",
+        "pages": [
+          "index",
+          "quickstart"
         ]
       }
     ]
