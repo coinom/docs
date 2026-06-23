@@ -19,7 +19,7 @@
         ]
       },
       {
-        "group": "plugins",
+        "group": "Plugins",
         "icon": "plug",
         "pages": [
           "plugins/woocommerce",
