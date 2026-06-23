@@ -25,7 +25,8 @@
           "plugins/woocommerce",
           "plugins/whmcs",
           "plugins/prestashop",
-          "plugins/easy-digital-downloads"
+          "plugins/easy-digital-downloads",
+          "plugins/opencart"
         ]
       }
     ]
