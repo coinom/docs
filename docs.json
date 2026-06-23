@@ -9,7 +9,7 @@
   },
   "favicon": "/favicon.png",
   "navigation": {
-    "pages": [
+    "groups": [
       {
         "group": "Getting Started",
         "pages": [
@@ -24,8 +24,7 @@
         "pages": [
           "plugins/woocommerce"
         ]
-      },
-      "test"
+      }
     ]
   },
   "logo": {
