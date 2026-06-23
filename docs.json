@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "Coinom Docs",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#5D16A3",
+    "light": "#6B07C9",
+    "dark": "#491580"
   },
   "favicon": "/favicon.png",
   "navigation": {
