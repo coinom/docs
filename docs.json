@@ -24,7 +24,8 @@
         "pages": [
           "plugins/woocommerce",
           "plugins/whmcs",
-          "plugins/presta-shop"
+          "plugins/presta-shop",
+          "plugins/easy-digital-downloads"
         ]
       }
     ]
