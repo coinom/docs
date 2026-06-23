@@ -23,7 +23,8 @@
         "icon": "plug",
         "pages": [
           "plugins/woocommerce",
-          "plugins/whmcs"
+          "plugins/whmcs",
+          "plugins/presta-shop"
         ]
       }
     ]
