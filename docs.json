@@ -22,7 +22,8 @@
         "group": "plugins",
         "icon": "plug",
         "pages": [
-          "plugins/woocommerce"
+          "plugins/woocommerce",
+          "plugins/whmcs"
         ]
       }
     ]
