@@ -1,0 +1,267 @@
+---
+title: "Accept Crypto Payments in Telegram Bots"
+---
+
+Use the Coinom Merchant API to accept cryptocurrency payments directly inside your Telegram bot.
+
+The integration flow is identical to a website or mobile application. Your bot creates a payment, sends the Coinom checkout link to the user, receives the payment callback, verifies the payment, and finally delivers the purchased product or service.
+
+<Info>
+  Telegram bots do not process cryptocurrency payments directly.
+
+  Coinom securely hosts the payment page and processes the payment. Your bot is responsible only for creating the payment, sending the payment link, and verifying the payment after completion.
+</Info>
+
+---
+
+## Integration Flow
+
+```text
+Telegram User
+      │
+      ▼
+Telegram Bot
+      │
+      │ Create Payment
+      ▼
+Coinom Merchant API
+      │
+      │ Returns trackId
+      ▼
+Telegram Bot
+      │
+      │ Sends Payment Link
+      ▼
+Coinom Checkout
+      │
+      │ Customer Pays
+      ▼
+Coinom
+      │
+      │ POST Callback
+      ▼
+Your Server
+      │
+      │ Verify Payment
+      ▼
+Deliver Product
+      │
+      ▼
+Notify Telegram User
+```
+
+---
+
+## Step 1 — Create a Payment
+
+Create a payment using the standard **Create Payment** endpoint.
+
+```http
+POST /api/v1/request
+```
+
+Example request
+
+```json
+{
+    "merchant": "coinom_xxxxxxxxx",
+    "amount": 25.50,
+    "description": "Premium Subscription",
+    "callbackUrl": "https://yourbot.com/coinom/callback",
+    "returnUrl": "https://yourbot.com/payment-complete"
+}
+```
+
+Successful response
+
+```json
+{
+    "result": 100,
+    "trackId": "ABCD123456",
+    "message": "success"
+}
+```
+
+The returned `trackId` uniquely identifies the payment and is required for the next steps.
+
+---
+
+## Step 2 — Send the Payment Link
+
+Generate the Coinom checkout URL using the returned `trackId`.
+
+```text
+https://app.coinom.com/pay/{trackId}
+```
+
+Example
+
+```text
+https://app.coinom.com/pay/ABCD123456
+```
+
+Send this URL to the customer using an Inline Keyboard button or any clickable Telegram message.
+
+Example
+
+> 💳 Complete your payment by clicking the button below.
+
+**\[ Pay with Crypto \]**
+
+---
+
+## Step 3 — Receive the Callback
+
+When the customer completes the payment, Coinom sends an HTTP POST request to your `callbackUrl`.
+
+Example
+
+```http
+POST https://yourbot.com/coinom/callback
+```
+
+Your callback endpoint should immediately verify the payment using the **Verify Payment** endpoint.
+
+<Warning>
+  Never assume a payment is successful simply because the customer returned to your bot.
+
+  Always verify the payment from your server.
+</Warning>
+
+---
+
+## Step 4 — Verify the Payment
+
+Verify the payment using the Verify Payment endpoint.
+
+```http
+POST /api/v1/verify
+```
+
+Example request
+
+```json
+{
+    "merchant": "coinom_xxxxxxxxx",
+    "trackId": "ABCD123456"
+}
+```
+
+Successful response
+
+```json
+{
+    "result": 100,
+    "amount": 25.50,
+    "refNumber": "CNM-12058"
+}
+```
+
+A payment is considered successful only when:
+
+- `result` equals `100`
+- The returned `amount` matches your original order amount
+
+---
+
+## Step 5 — Notify the User
+
+When creating the payment, store the Telegram `chat_id` together with the generated `trackId`.
+
+After successful payment verification:
+
+1. Find the matching `chat_id`
+2. Deliver the purchased product or service
+3. Send a confirmation message using the Telegram Bot API
+
+Example message
+
+```text
+✅ Payment received successfully.
+
+Reference Number:
+CNM-12058
+
+Thank you for your purchase.
+```
+
+---
+
+## Common Use Cases
+
+Telegram Bot Payments can be used for:
+
+- Digital products
+- Premium subscriptions
+- Membership access
+- License keys
+- Account balance top-ups
+- Donations
+- Private channel access
+- AI bot credits
+- Virtual goods
+
+---
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Verify Every Payment">
+    Always verify payments using the Verify Payment endpoint before delivering any product or service.
+  </Card>
+
+  <Card title="Compare the Amount">
+    Always compare the verified amount with your original order amount before completing the purchase.
+  </Card>
+
+  <Card title="Store Track IDs">
+    Store the generated `trackId` together with the Telegram `chat_id` or your internal order ID.
+  </Card>
+
+  <Card title="Use HTTPS">
+    Your callback URL should be publicly accessible over HTTPS for production environments.
+  </Card>
+
+  <Card title="Do Not Trust Redirects">
+    Never rely on the customer returning to your bot as proof of payment.
+  </Card>
+
+  <Card title="Store Reference Numbers">
+    Save the returned `refNumber` for future support, reconciliation, and accounting.
+  </Card>
+</CardGroup>
+
+---
+
+## Integration Summary
+
+1. Create a payment.
+2. Receive the `trackId`.
+3. Send the Coinom payment link to the Telegram user.
+4. Wait for the payment callback.
+5. Verify the payment.
+6. Compare the verified amount.
+7. Deliver the purchased product or service.
+8. Notify the user.
+
+---
+
+## Related Documentation
+
+<CardGroup cols={2}>
+  <Card title="Quick Start" icon="rocket" href="/api/quick-start">
+    Get started with the Coinom API.
+  </Card>
+
+  <Card title="Create Payment" icon="credit-card" href="/api/create-payment">
+    Create a new payment.
+  </Card>
+
+  <Card title="Verify Payment" icon="shield-check" href="/api/verify-payment">
+    Verify completed payments.
+  </Card>
+
+  <Card title="Response Codes" icon="circle-info" href="/api/response-codes">
+    View all API response codes.
+  </Card>
+</CardGroup>

@@ -1,0 +1,213 @@
+---
+title: "Quick Start"
+---
+
+Welcome to the Coinom API.
+
+This guide shows you how to accept your first cryptocurrency payment in just a few minutes.
+
+By the end of this guide, you will be able to:
+
+- Create a payment
+- Redirect your customer to the Coinom payment page
+- Verify the payment
+- Complete your order securely
+
+---
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- A Coinom account
+- An active merchant
+- An API Key
+
+If you haven't created a merchant yet, follow the **Create Merchant & Generate API Key** guide.
+
+---
+
+## Payment Flow
+
+Every payment follows the same simple flow.
+
+```text
+Your Server
+     │
+     │  Create Payment
+     ▼
+Coinom API
+     │
+     │  Returns trackId
+     ▼
+Your Website
+     │
+     │  Redirect Customer
+     ▼
+Coinom Checkout
+     │
+     │  Customer Pays
+     ▼
+Callback URL
+     │
+     │  Verify Payment
+     ▼
+Your Server
+     │
+     ▼
+Order Completed
+```
+
+---
+
+## Step 1 — Create a Payment
+
+Create a payment by sending a POST request to the Coinom API.
+
+```http
+POST https://app.coinom.com/api/v1/request
+Content-Type: application/json
+```
+
+Example request
+
+```json
+{
+    "merchant": "coinom_xxxxxxxxxxxxxxxxx",
+    "amount": 99.99,
+    "description": "Premium Plan",
+    "callbackUrl": "https://example.com/payment/callback",
+    "returnUrl": "https://example.com/payment/success"
+}
+```
+
+Successful response
+
+```json
+{
+    "result": 100,
+    "trackId": "9D7F1A5D",
+    "message": "success"
+}
+```
+
+When the request succeeds, Coinom returns a unique **trackId**. You'll use this value to redirect the customer and verify the payment later.
+
+<Info>
+  For a complete description of all request fields and responses, see **Create Payment**.
+</Info>
+
+---
+
+## Step 2 — Redirect the Customer
+
+Redirect your customer to the Coinom hosted checkout page.
+
+```text
+https://app.coinom.com/pay/{trackId}
+```
+
+Example
+
+```text
+https://app.coinom.com/pay/9D7F1A5D
+```
+
+The customer can securely complete the payment using any supported cryptocurrency.
+
+---
+
+## Step 3 — Wait for the Callback
+
+After the payment is completed, Coinom sends an HTTP request to the **callbackUrl** you provided when creating the payment.
+
+This callback notifies your server that the payment status has changed.
+
+> Do not rely on the customer returning to your website. Always verify the payment on your server.
+
+---
+
+## Step 4 — Verify the Payment
+
+Verify the payment using the Verify Payment endpoint.
+
+```http
+POST https://app.coinom.com/api/v1/verify
+```
+
+Example request
+
+```json
+{
+    "merchant": "coinom_xxxxxxxxxxxxxxxxx",
+    "trackId": "9D7F1A5D"
+}
+```
+
+Successful response
+
+```json
+{
+    "result": 100,
+    "amount": 99.99,
+    "refNumber": "CO-10235"
+}
+```
+
+Only treat the payment as successful when:
+
+- `result` equals `100`
+- The returned `amount` matches your original payment amount
+
+<Warning>
+  Never mark an order as paid before verifying it using the Verify Payment endpoint.
+</Warning>
+
+---
+
+## Complete Flow
+
+```php
+// 1. Create payment
+POST /request
+
+// 2. Receive trackId
+$trackId = $response->trackId;
+
+// 3. Redirect customer
+https://app.coinom.com/pay/{trackId}
+
+// 4. Customer completes payment
+
+// 5. Coinom calls your callback URL
+
+// 6. Verify payment
+POST /verify
+
+// 7. If result == 100
+// Mark the order as paid
+```
+
+---
+
+## Next Steps
+
+Continue with the detailed API documentation.
+
+<CardGroup cols={2}>
+  <Card title="Create Payment" icon="credit-card" href="/api/create-payment">
+    Learn how to create a new payment.
+  </Card>
+
+  <Card title="Verify Payment" icon="shield-check" href="/api/verify-payment">
+    Verify completed payments.
+  </Card>
+
+  <Card title="Response Codes" icon="circle-info" href="/api/response-codes">
+    Understand every API response code.
+  </Card>
+
+  <Card title="Telegram Bot" icon="paper-plane" href="/api/telegram-bot">
+    Accept payments inside Telegram bots.
+  </Card>
+</CardGroup>

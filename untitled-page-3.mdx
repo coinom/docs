@@ -1,0 +1,182 @@
+---
+title: "Verify Payment"
+---
+
+Verifies the status of a payment using its `trackId`.
+
+After your customer completes the payment, Coinom will send a request to your `callbackUrl`.
+
+To ensure the payment is genuine, you should always verify it using this endpoint before marking an order as paid.
+
+<Warning>
+  Never trust the customer returning to your website as proof of payment.
+
+  Always verify the payment on your server.
+</Warning>
+
+---
+
+## Endpoint
+
+```http
+POST https://app.coinom.com/api/v1/verify
+```
+
+## Headers
+
+| Header | Value |
+| --- | --- |
+| Content-Type | application/json |
+
+---
+
+## Request Body
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| merchant | string | ✅ | Your Coinom API Key. |
+| trackId | string | ✅ | The payment Track ID returned by the Create Payment endpoint. |
+
+---
+
+## Example Request
+
+```json
+{
+    "merchant": "coinom_xxxxxxxxxxxxxxxxx",
+    "trackId": "9D7F1A5D"
+}
+```
+
+---
+
+# Successful Response
+
+```json
+{
+    "result": 100,
+    "amount": 99.99,
+    "refNumber": "CO-10235"
+}
+```
+
+| Field | Description |
+| --- | --- |
+| result | API response code. `100` means the payment was successful. |
+| amount | The amount that was paid. |
+| refNumber | Coinom payment reference number. |
+
+---
+
+## Verify Before Completing the Order
+
+A payment should only be considered successful when:
+
+- `result` equals `100`
+- The returned `amount` matches your original payment amount
+
+Example
+
+```php
+if ($response->result == 100 &&
+    $response->amount == $orderAmount) {
+
+    // Mark order as paid
+
+}
+```
+
+---
+
+# Possible Responses
+
+## Success
+
+```json
+{
+    "result": 100,
+    "amount": 99.99,
+    "refNumber": "CO-10235"
+}
+```
+
+---
+
+## Payment Not Completed
+
+The customer has not completed the payment yet.
+
+```json
+{
+    "result": 202,
+    "amount": 99.99
+}
+```
+
+---
+
+## Invalid Track ID
+
+The supplied Track ID does not exist.
+
+```json
+{
+    "result": 203,
+    "message": "Invalid track ID"
+}
+```
+
+---
+
+## Payment Not Verified
+
+The payment exists but has not been finalized.
+
+```json
+{
+    "result": 203,
+    "amount": 99.99
+}
+```
+
+---
+
+## Invalid API Key
+
+```json
+{
+    "result": 104,
+    "message": "Invalid API key"
+}
+```
+
+---
+
+## Merchant Disabled
+
+```json
+{
+    "result": 103,
+    "message": "Merchant account is disabled"
+}
+```
+
+---
+
+# Best Practices
+
+- Verify every payment on your server.
+- Never trust client-side redirects.
+- Compare the returned `amount` with your order amount.
+- Deliver products or services only after a successful verification.
+- Store the returned `refNumber` for future reference.
+
+---
+
+## Next Step
+
+If verification succeeds, complete the order and provide the purchased product or service to your customer.
+
+<Card title="Response Codes" icon="circle-info" href="/api/response-codes">
+  View all API response codes →
+</Card>

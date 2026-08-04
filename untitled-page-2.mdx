@@ -1,0 +1,241 @@
+---
+title: "Create Payment"
+---
+
+Creates a new payment and returns a unique `trackId`.
+
+Use the returned `trackId` to redirect your customer to the Coinom payment page.
+
+## Endpoint
+
+```http
+POST https://app.coinom.com/api/v1/request
+```
+
+## Headers
+
+| Header | Value |
+| --- | --- |
+| Content-Type | application/json |
+
+---
+
+## Request Body
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| merchant | string | ✅ | Your Coinom API Key. |
+| amount | number | ✅ | Payment amount. Must be greater than `0`. |
+| callbackUrl | string | ✅ | HTTPS or HTTP URL that Coinom will notify after payment. |
+| returnUrl | string | Optional | URL where the customer will be redirected after payment. |
+| description | string | Optional | Payment description shown in your dashboard. |
+| mobile | string | Optional | Customer mobile number. |
+
+---
+
+## Example Request
+
+```json
+{
+    "merchant": "coinom_xxxxxxxxxxxxxxxxx",
+    "amount": 99.99,
+    "description": "Premium Plan",
+    "mobile": "+12025550123",
+    "callbackUrl": "https://example.com/payment/callback",
+    "returnUrl": "https://example.com/payment/success"
+}
+```
+
+---
+
+## Successful Response
+
+```json
+{
+    "result": 100,
+    "trackId": "9D7F1A5D",
+    "message": "success"
+}
+```
+
+| Field | Description |
+| --- | --- |
+| result | API response code. `100` means success. |
+| trackId | Unique payment identifier. |
+| message | Response message. |
+
+---
+
+## Redirect the Customer
+
+After creating the payment, redirect the customer to:
+
+```text
+https://app.coinom.com/pay/{trackId}
+```
+
+Example
+
+```text
+https://app.coinom.com/pay/9D7F1A5D
+```
+
+---
+
+# Validation Rules
+
+### merchant
+
+- Required
+- API Key issued by Coinom
+
+---
+
+### amount
+
+- Required
+- Numeric
+- Must be greater than `0`
+
+Example
+
+```json
+99.99
+```
+
+---
+
+### callbackUrl
+
+- Required
+- Valid URL
+- Maximum length: **512 characters**
+
+Example
+
+```text
+https://example.com/payment/callback
+```
+
+---
+
+### returnUrl
+
+- Optional
+- Valid URL
+- Maximum length: **512 characters**
+
+---
+
+### description
+
+- Optional
+- Maximum length: **1000 characters**
+
+---
+
+### mobile
+
+- Optional
+- Maximum length: **50 characters**
+
+---
+
+# Possible Responses
+
+## Success
+
+```json
+{
+    "result": 100,
+    "trackId": "9D7F1A5D",
+    "message": "success"
+}
+```
+
+---
+
+## Invalid API Key
+
+```json
+{
+    "result": 104,
+    "message": "Invalid API key"
+}
+```
+
+---
+
+## Invalid Amount
+
+```json
+{
+    "result": 105,
+    "message": "Amount is missing or invalid"
+}
+```
+
+---
+
+## Invalid Callback URL
+
+```json
+{
+    "result": 106,
+    "message": "Callback URL is missing or invalid"
+}
+```
+
+---
+
+## Invalid Return URL
+
+```json
+{
+    "result": 107,
+    "message": "Invalid return URL"
+}
+```
+
+---
+
+## Description Too Long
+
+```json
+{
+    "result": 108,
+    "message": "Description is too long"
+}
+```
+
+---
+
+## Mobile Too Long
+
+```json
+{
+    "result": 109,
+    "message": "Mobile number is too long"
+}
+```
+
+---
+
+## Merchant Disabled
+
+```json
+{
+    "result": 103,
+    "message": "Merchant account is disabled"
+}
+```
+
+---
+
+## Next Step
+
+Once the customer completes the payment, verify it using the **Verify Payment** endpoint before delivering the product or service.
+
+<Card title="Verify Payment" icon="shield-check" href="/api/verify-payment">
+  Verify completed payments →
+</Card>

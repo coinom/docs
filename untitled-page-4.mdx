@@ -1,0 +1,119 @@
+---
+title: "Response Codes"
+---
+
+Every Coinom API request returns a numeric `result` code.
+
+Use this value to determine whether the request was successful or why it failed.
+
+<Info>
+  Coinom returns **HTTP 200 OK** for all processed API requests, including validation errors.
+
+  Always check the **result** field in the JSON response instead of relying on the HTTP status code.
+
+  The only exception is an unexpected server error, which returns **HTTP 500 Internal Server Error**.
+</Info>
+
+---
+
+## Success
+
+| Code | Description |
+| --- | --- |
+| **100** | Request completed successfully. |
+
+---
+
+## Request Errors
+
+These response codes may be returned by the **Create Payment** endpoint.
+
+| Code | Description |
+| --- | --- |
+| **101** | Invalid JSON payload. |
+| **102** | Merchant field is required. |
+| **103** | Merchant account is disabled. |
+| **104** | Invalid API Key. |
+| **105** | Amount is missing or invalid. |
+| **106** | Callback URL is missing or invalid. |
+| **107** | Return URL is invalid. |
+| **108** | Description is too long. |
+| **109** | Mobile number is too long. |
+
+---
+
+## Verify Payment
+
+These response codes may be returned by the **Verify Payment** endpoint.
+
+| Code | Description |
+| --- | --- |
+| **100** | Payment verified successfully. |
+| **202** | Payment has not been completed yet. |
+| **203** | Invalid Track ID or the payment has not been finalized. |
+
+---
+
+## Server Error
+
+| Code | Description |
+| --- | --- |
+| **500** | Internal server error. Please try again later. |
+
+---
+
+# Successful Response
+
+```json
+{
+    "result": 100,
+    "trackId": "9D7F1A5D",
+    "message": "success"
+}
+```
+
+---
+
+# Failed Response
+
+```json
+{
+    "result": 104,
+    "message": "Invalid API key"
+}
+```
+
+---
+
+# Error Handling
+
+Always check the `result` field before continuing your payment flow.
+
+```php
+if ($response->result != 100) {
+
+    // Handle the error
+
+    exit;
+
+}
+```
+
+For payment verification, a payment is considered successful only when:
+
+- `result` equals `100`
+- The returned `amount` matches your original order amount
+
+---
+
+## Related Documentation
+
+<CardGroup cols={2}>
+  <Card title="Create Payment" icon="credit-card" href="/api/create-payment">
+    Create a new payment.
+  </Card>
+
+  <Card title="Verify Payment" icon="shield-check" href="/api/verify-payment">
+    Verify completed payments.
+  </Card>
+</CardGroup>
