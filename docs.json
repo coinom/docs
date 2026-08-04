@@ -33,11 +33,11 @@
         "group": "API",
         "icon": "gear-complex-api",
         "pages": [
-          "untitled-page",
-          "untitled-page-2",
-          "untitled-page-3",
-          "untitled-page-4",
-          "untitled-page-5"
+          "api/quick-start",
+          "api/create-payment",
+          "api/verify-payment",
+          "api/response-codes",
+          "api/telegram-bots"
         ]
       }
     ]
