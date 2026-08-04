@@ -37,7 +37,7 @@
           "api/create-payment",
           "api/verify-payment",
           "api/response-codes",
-          "api/telegram-bots"
+          "api/telegram-bot"
         ]
       }
     ]
